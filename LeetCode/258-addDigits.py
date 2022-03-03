@@ -3,7 +3,7 @@ class Solution:
         while num > 9:
             t = 0
             while num != 0:
-                t += num % 10
-                num /= 10
+                t += (num % 10)
+                num = num // 10
             num = t
-        return t
+        return num
