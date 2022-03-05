@@ -7,3 +7,6 @@ class Solution:
                 num = num // 10
             num = t
         return num
+
+    def addDigits2(self, num: int) -> int:
+        return (num - 1) % 9 + 1
