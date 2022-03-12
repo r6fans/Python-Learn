@@ -5,17 +5,15 @@ class Node:
         self.val = val
         self.children = children
 """
-# 递归
+
 class Solution:
-    def preorder(self, root: 'Node') -> List[int]:
+    def postorder(self, root: 'Node') -> List[int]:
         ans = []
         def dfs(node: 'Node'):
             if node is None:
                 return
-            ans.append(node.val)
             for ch in node.children:
                 dfs(ch)
+            ans.append(node.val)
         dfs(root)
         return ans
-
-# 迭代
