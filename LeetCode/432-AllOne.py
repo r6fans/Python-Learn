@@ -1,6 +1,7 @@
 class AllOne:
 
     def __init__(self):
+        
 
 
     def inc(self, key: str) -> None:
