@@ -1,22 +1,16 @@
 class Solution:
     def shortestToChar(self, s: str, c: str) -> list[int]:
-        left = []
-        right = []
-        for i in range(0, len(s)):
-            temp = []
-            for j in range(0, len(s)):
-                if s[j] == 'c':
-                    str_len = j - i 
-                    temp.append(abs(str_len))
-            left.append(min(temp))
-            
-            for j in range(0, len(s)):
-                if s[::-1][j] == 'c':
-                    str_len = j - i 
-                    temp.append(abs(str_len))
-            right.append(min(temp))
-            
-        return [min(left[i],right[i]) for i in range(0, len(s))]
+        ans, last = [INF] * len(s), -INF
+        for i, ch in enumerate(s):
+            if ch == c:
+                last = i
+            ans[i] = min(ans[i], i - last)
+        last = inf
+        for i, ch in enumerate(s[::-1]):
+            if ch == c:
+                last = -i
+            ans[-1 - i] = min(ans[-1 - i], last + i)
+        return ans
 
 s = "loveleetcode"
 c = "e"
