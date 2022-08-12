@@ -3,7 +3,7 @@ class DLinkedNode:
         self.key = key
         self.value = value
         self.prev: DLinkedNode = None
-        self.next: DLinkedNode
+        self.next: DLinkedNode = None
 
 class DLinkedlist: 
     def __init__(self ):
@@ -11,70 +11,76 @@ class DLinkedlist:
         self.tail = DLinkedNode(0,0)
         self.head.next = self.tail
         self.tail.prev = self.head
+        self.size = 0
         
-    def add_to_head(self, node: DLinkedNode):
-        head_next =self.head.next
-        self.head.next = None
-        head_next.prev = node
-        node.next = head_next
-        node.prev = self.head
+    def add_to_tail(self, node: DLinkedNode):
+        node.prev = self.tail.prev
+        node.next = self.tail
+        self.tail.prev.next = node
+        self.tail.prev = node
+        self.size+=1
+        
     
     def remove(self, node: DLinkedNode):
         node.prev.next = node.next
         node.next.prev = node.prev
+        self.size-=1
     
-    def remove_from_tail(self):
+    def remove_first_node(self):
         if self.head.next == self.tail:
             return None
-        else:
-            node = self.tail.prev
-            self.remove(node)
-            return node
+        first = self.head.next
+        self.remove(first)
+        return first
+
+    def get_size(self) -> int:
+        return self.size
+        
 
 class LRUCache:
 
     def __init__(self, capacity: int):
         self.capacity = capacity
-        self.keymap: Dict[int, DLinkedNode] = {}
+        self.hashmap: Dict[int, DLinkedNode] = {}
         self.cache = DLinkedlist()
     
-    def add_item(self, key: int, value: int):
-        node = DLinkedNode(key=key, value=value)
-        self.keymap[key] = node
-        self.cache.add_to_head(node)
+    def make_recent(self, key):
+        new_node = self.hashmap.get(key)
+        self.cache.remove(new_node)
+        self.cache.add_to_tail(new_node)
         
-    def remove_item(self, key: int):
-        node = self.keymap[key]
-        self.cache.remove(node)
-        del self.keymap[key]
+    def add_recent(self, key, val):
+        recent = DLinkedNode(key, val)
+        self.cache.add_to_tail(recent)
+        self.hashmap[key] = recent
     
-    def remove_least_recently(self):
-        node = self.cache.remove_from_tail()
-        del self.keymap[node.key]
+    def remove_key(self, key):
+        remove_node = self.hashmap.get(key)
+        self.cache.remove(remove_node)
+        del self.hashmap[key]
     
-    def set_most_recently(self, key: int):
-        node = self.keymap[key]
-        self.cache.remove(node)
-        self.cache.add_to_head(node)
-
+    def remove_least_recent(self):
+        least_recent = self.cache.remove_first_node()
+        delete_key = least_recent.key
+        del self.hashmap[delete_key]
         
-    def get(self, key: int) -> int:
-        if key in self.keymap:
-            self.set_most_recently(key)
-            return self.keymap[key].value
-        else:
+    def get(self, key) -> int:
+        if key not in self.hashmap.keys():
             return -1
+        self.make_recent(key)
+        return self.hashmap.get(key)
 
-
-    def put(self, key: int, value: int) -> None:
-        if key in self.keymap:
-            self.keymap[key].value = value
-            self.set_most_recently(key)
-        else:
-            if len(self.keymap) >= self.capacity:
-                self.remove_least_recently()
-            self.add_item(key, value)
-
+    def put(self, key, val):
+        if key in self.hashmap.keys():
+            self.remove_key(key)
+            self.add_recent(key, val)
+            return
+        
+        if self.cache.get_size() == self.capacity:
+            self.remove_least_recent()
+        
+        self.add_recent(key, val)
+            
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
