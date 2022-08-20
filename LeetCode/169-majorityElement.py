@@ -13,6 +13,20 @@ class Solution:
         for k,v in hashmap.items():
             if v > mid:
                 return k
+    
+    def majityElement_moore(self, nums: list[int]) -> int:
+        major = 0
+        count = 0
+        
+        for n in nums:
+            if count == 0:
+                major = n
+            if n == major:
+                count = count + 1
+            else:
+                count = count - 1
+
+        return major
              
 if __name__ == "__main__":
     print(Solution().majorityElement([6,5,5]))    
