@@ -1,13 +1,12 @@
 class Solution:
     def productExceptSelf(self, nums):
         ans = []
-
         for i in range(len(nums)):
-            new = nums
-            del new[i]
             tem = 1
-            for j in range(len(new)):
-                tem = tem * new[j]
+            for j in range(len(nums)):
+                if i == j:
+                    continue
+                tem = tem * nums[j]
             ans.append(tem)
         
         return ans
