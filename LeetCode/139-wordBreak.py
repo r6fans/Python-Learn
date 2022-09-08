@@ -21,28 +21,35 @@
         
 #         return dfs(0)
 
+# DFS 深度优先遍历
+# class Solution:
+#     def wordBreak(self, s: str, wordDict: list(str)) -> bool:
+#         length = len(s)
+#         memo = [None] * length
+         
+#         def canBreak(start):
+#             if start >= length:
+#                 return True
+
+#             if memo[start] != None:
+#                 return memo[strart]
+             
+#             for i in range(start + 1 ,length + 1):
+#                 prefix = s[start:i]
+#                 if (prefix in wordDict) and canBreak(i):
+#                     memo[start] = True
+#                     return True
+            
+#             memo[start] = False
+#             return False
+            
+#         return canBreak(0)
+
+#动态规划
 class Solution:
     def wordBreak(self, s: str, wordDict: list(str)) -> bool:
         length = len(s)
-        memo = [None] * length
-         
-        def canBreak(start):
-            if start >= length:
-                return True
-
-            if memo[start] != None:
-                return memo[strart]
-             
-            for i in range(start + 1 ,length + 1):
-                prefix = s[start:i]
-                if (prefix in wordDict) and canBreak(i):
-                    memo[start] = True
-                    return True
-            
-            memo[start] = False
-            return False
-            
-        return canBreak(0)
+        
 
 if __name__ == "__main__":
     print(Solution().wordBreak("a", ["a"]))
