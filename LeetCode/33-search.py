@@ -10,11 +10,12 @@ class Solution:
     def search(self, nums: list(int), target: int) -> int:
         low = 0
         high = len(nums) - 1
-        mid = (low + high) / 2
-        if ((nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid])):
-            low = mid + 1
-        else:
-            high = mid
+        while low < high:
+            mid = (low + high) / 2
+            if ((nums[0] > target) ^ (nums[0] > nums[mid]) ^ (target > nums[mid])):
+                low = mid + 1
+            else:
+                high = mid
         
         return (low == high & low if nums[low] == target else -1)
     
